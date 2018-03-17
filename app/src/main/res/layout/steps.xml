@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- included in activity_recipe_list showing ingredients and abbreviated step descriptions (one pane layout) -->
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:scrollbars="vertical"
+    app:layoutManager="LinearLayoutManager"
+    app:layout_constraintTop_toBottomOf="@+id/tv_ingredients"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+    tools:context="com.douglasharvey.bakingapp.ui.DetailActivity"
+    tools:listitem="@layout/steps_list_item" />
+
+    <!-- android:name="com.douglasharvey.bakingapp.RecipeDetailListFragment" -->

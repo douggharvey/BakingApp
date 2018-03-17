@@ -1,0 +1,11 @@
+<resources>
+    //Constants
+    <string name="EXTRA_SELECTED_RECIPE">com.douglasharvey.bakingapp.SELECTED_RECIPE</string>
+
+    //rest
+    <string name="app_name">Baking App</string>
+    <string name="name_recipe_image">Recipe Image</string>
+    <string name="master_servings_header">Servings:</string>
+    <string name="title_ingredients">Ingredients:</string>
+
+</resources>

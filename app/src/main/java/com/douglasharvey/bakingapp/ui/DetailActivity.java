@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.douglasharvey.bakingapp.R;
+import com.douglasharvey.bakingapp.adapters.StepAdapter;
 import com.douglasharvey.bakingapp.models.Ingredient;
 import com.douglasharvey.bakingapp.models.Recipe;
 
@@ -19,10 +20,13 @@ import butterknife.ButterKnife;
 public class DetailActivity extends AppCompatActivity {
 
     private static Recipe recipe;
+
+    private StepAdapter adapter;
+
     @BindView(R.id.tv_ingredients)
     TextView tvIngredients;
-    @BindView(R.id.detail_list)
-    RecyclerView detailList;
+    @BindView(R.id.rv_steps_list)
+    RecyclerView rvStepsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,7 @@ public class DetailActivity extends AppCompatActivity {
         Intent receivedIntent = getIntent();
 
 
-//        if (receivedIntent.hasExtra(getString(R.string.EXTRA_SELECTED_RECIPE))) {
+//  //TODO add this back      if (receivedIntent.hasExtra(getString(R.string.EXTRA_SELECTED_RECIPE))) {
         Bundle data = receivedIntent.getExtras();
         if (data != null) {
             recipe = data.getParcelable(getString(R.string.EXTRA_SELECTED_RECIPE));
@@ -45,6 +49,7 @@ public class DetailActivity extends AppCompatActivity {
         //todo check lint warning
         getSupportActionBar().setTitle(recipe.getName()); //todo add servings?
         setupIngredients();
+        setupSteps();
     }
 
     private void setupIngredients() {
@@ -60,4 +65,12 @@ public class DetailActivity extends AppCompatActivity {
         }
         tvIngredients.setText(ingredientsDisplay);
     }
+
+
+    private void setupSteps() {
+        rvStepsList.setHasFixedSize(true);
+        adapter = new StepAdapter(recipe.getSteps());
+        rvStepsList.setAdapter(adapter);
+    }
+
 }

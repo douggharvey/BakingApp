@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder> {
 
@@ -42,15 +41,8 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder
 
     public void setRecipesData(ArrayList<Recipe> recipeList) {
         if (recipeList != null) {
-            if (this.recipeList != null) this.recipeList.clear();
-            for (int i = 0; i < recipeList.size(); i++) {
-                Timber.d("Recipe name:%s" ,recipeList.get(i).getName());
-             /*   List<Ingredient> ingredientList = recipeList.get(i).getIngredient();
-                for (int j = 0; j < ingredientList.size(); j++) {
-                    Timber.d("Ingredient: " + j + "%s", ingredientList.get(j).getIngredient());
-                }
-                */
-            }
+//todo seems to be not required so commented out for now.
+// if (this.recipeList != null) this.recipeList.clear();
             this.recipeList = recipeList;
             notifyDataSetChanged();
         }
@@ -74,13 +66,6 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder
         //holder.ivMasterRecipeImage = // no image data on json so unable to determine a way to load it.
         holder.tvMasterRecipeName.setText(holder.recipe.getName());
         holder.tvRecipeNumberServings.setText(Integer.toString(holder.recipe.getServings()));
-   /*     holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        */
     }
 
     @Override

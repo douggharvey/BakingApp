@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- TODO needs work for scrolling and alternative tablet/phone layouts -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -29,15 +30,15 @@
 
         <TextView
             android:id="@+id/tv_ingredients"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_ingredients"
             tools:text="Ingredients" />
 
         <include layout="@layout/steps" />
-
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

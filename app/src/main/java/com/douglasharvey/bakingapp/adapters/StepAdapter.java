@@ -1,5 +1,6 @@
 package com.douglasharvey.bakingapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
         this.stepsList = stepsList;
     }
 
-    private ArrayList<Step> stepsList;
+    private final ArrayList<Step> stepsList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -49,6 +50,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
         return new ViewHolder(inflatedView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 

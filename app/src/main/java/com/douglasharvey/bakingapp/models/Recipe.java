@@ -48,9 +48,11 @@ public class Recipe implements Parcelable {
 
     };
 
+    @SuppressWarnings("unchecked")
     protected Recipe(Parcel in) {
         this.id = ((int) in.readValue((int.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
+        //noinspection unchecked
         this.ingredients = in.readArrayList(com.douglasharvey.bakingapp.models.Ingredient.class.getClassLoader());
         this.steps = in.readArrayList(com.douglasharvey.bakingapp.models.Step.class.getClassLoader());
         this.servings = ((int) in.readValue((int.class.getClassLoader())));

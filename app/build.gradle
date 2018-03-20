@@ -25,6 +25,11 @@ dependencies {
     //Butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //Support library
+    implementation 'com.android.support:support-v4:27.1.0'
+    //Design library
+    implementation 'com.android.support:design:27.1.0'
+
     //recyclerview
     implementation 'com.android.support:recyclerview-v7:27.1.0'
 
@@ -41,6 +46,14 @@ dependencies {
 
     //Apache commons for stringutils
     implementation 'org.apache.commons:commons-lang3:3.7'
+
+    //Exoplayer //todo consider change to only necessary dependencies
+///    implementation 'com.google.android.exoplayer:exoplayer:2.7.0'
+    //compile 'com.google.android.exoplayer:exoplayer:2.7.0'
+
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.7.0'
+    //   compile 'com.google.android.exoplayer:exoplayer-dash:2.X.X'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

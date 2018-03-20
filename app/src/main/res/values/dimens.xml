@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_margin">16dp</dimen>
+    <dimen name="text_margin">8dp</dimen>
+    <dimen name="activity_detail_middle_guideline">.30</dimen>
+    <dimen name="fragment_step_horizontal_guideline">.50</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="steps_tab_layout_max_width">150dp</dimen>
+    <dimen name="activity_detail_left_guideline_start">20dp</dimen>
+    <dimen name="step_long_description_max_text_size">16dp</dimen>
+    <dimen name="master_list_padding">4dp</dimen>
+    <dimen name="master_list_image_size">40dp</dimen>
+    <dimen name="master_list_image_start_margin">16dp</dimen>
+    <dimen name="master_recipe_name_start_margin">20dp</dimen>
+    <dimen name="master_recipe_name_padding_end">16dp</dimen>
+    <dimen name="master_servings_start_margin">8dp</dimen>
+    <dimen name="step_long_description_margins">8dp</dimen>
+    <dimen name="step_video_margins">8dp</dimen>
+    <dimen name="master_recycler_view_column_width">250dp</dimen>
+
 </resources>

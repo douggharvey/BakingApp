@@ -22,7 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DetailActivity"/>
+        <activity android:name=".ui.DetailActivity" />
+        <activity
+            android:name=".ui.StepActivity"
+            android:label="@string/title_activity_step"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

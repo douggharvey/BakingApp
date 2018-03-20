@@ -21,7 +21,7 @@
         android:id="@+id/rv_recipe_master_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:columnWidth="250dp"
+        android:columnWidth="@dimen/master_recycler_view_column_width"
         android:scrollbars="vertical"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:layout_constraintLeft_toLeftOf="parent"

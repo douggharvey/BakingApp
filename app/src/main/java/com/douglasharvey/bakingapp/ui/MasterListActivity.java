@@ -55,7 +55,8 @@ public class MasterListActivity extends AppCompatActivity {
         outState.putParcelableArrayList(RECIPE_LIST,
                 recipeList);
     }
-
+//todo find a way to extend view as clickable area is less than screen width/column width.
+    // or show clickable area.
     private void setupRecipesList() {
         //NOTE: not setting LayoutManager here because it is done in AutoRecyclerView according to dynamically calculated spancount.
 
@@ -99,6 +100,7 @@ public class MasterListActivity extends AppCompatActivity {
                 Timber.e(t.getMessage());
             }
         });
+        //todo consider whether to renumber recipes to account for missing steps (yellow cake step 7 missing!)
     }
 
 }

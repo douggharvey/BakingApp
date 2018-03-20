@@ -1,0 +1,41 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.douglasharvey.bakingapp.ui.StepFragment">
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/player_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/horizontal_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="@dimen/fragment_step_horizontal_guideline" />
+
+    <TextView
+        android:id="@+id/tv_step_long_description"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/step_long_description_margins"
+        android:paddingBottom="@dimen/step_long_description_margins"
+        android:scrollbars="vertical"
+        android:maxLines="8"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMaxTextSize="@dimen/step_long_description_max_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/player_view"
+        app:layout_constraintTop_toBottomOf="@+id/horizontal_guideline"
+        tools:text="Long description"
+        tools:ignore="MissingPrefix" />
+
+</android.support.constraint.ConstraintLayout>

@@ -7,16 +7,16 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:padding="4dp">
+    android:padding="@dimen/master_list_padding">
 
     <ImageView
         android:id="@+id/iv_master_recipe_image"
-        android:layout_marginStart="16dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/master_list_image_size"
+        android:layout_height="@dimen/master_list_image_size"
+        android:layout_marginStart="@dimen/master_list_image_start_margin"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
         android:contentDescription="@string/name_recipe_image"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_cupcake"
         app:layout_constraintBottom_toBottomOf="@+id/tv_master_servings_header"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +26,13 @@
         android:id="@+id/tv_master_recipe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="16dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/master_recipe_name_start_margin"
+        android:paddingEnd="@dimen/master_recipe_name_padding_end"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/iv_master_recipe_image"
         app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry"
         tools:text="Nutella Pie" />
 
     <TextView
@@ -47,7 +48,7 @@
         android:id="@+id/tv_recipe_number_servings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/master_servings_start_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         app:layout_constraintStart_toEndOf="@+id/tv_master_servings_header"
         app:layout_constraintTop_toTopOf="@+id/tv_master_servings_header"

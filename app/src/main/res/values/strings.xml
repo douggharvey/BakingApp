@@ -1,11 +1,17 @@
 <resources>
     //Constants
     <string name="EXTRA_SELECTED_RECIPE">com.douglasharvey.bakingapp.SELECTED_RECIPE</string>
+    <string name="EXTRA_STEPS">com.douglasharvey.bakingapp.STEPS</string>
+    <string name="EXTRA_STEP_POSITION">com.douglasharvey.bakingapp.STEP_POSITION</string>
+    <string name="EXTRA_RECIPE_NAME">com.douglasharvey.bakingapp.RECIPE_NAME</string>
 
     //rest
     <string name="app_name">Baking App</string>
     <string name="name_recipe_image">Recipe Image</string>
     <string name="master_servings_header">Servings:</string>
     <string name="title_ingredients">Ingredients:</string>
+
+    <string name="steps_header">Steps:</string>
+    <string name="title_activity_step">StepActivity</string>
 
 </resources>

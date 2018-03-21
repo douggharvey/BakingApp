@@ -41,8 +41,6 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder
 
     public void setRecipesData(ArrayList<Recipe> recipeList) {
         if (recipeList != null) {
-//todo seems to be not required so commented out for now.
-// if (this.recipeList != null) this.recipeList.clear();
             this.recipeList = recipeList;
             notifyDataSetChanged();
         }

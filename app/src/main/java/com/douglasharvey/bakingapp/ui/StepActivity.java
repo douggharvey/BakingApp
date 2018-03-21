@@ -1,7 +1,6 @@
 package com.douglasharvey.bakingapp.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,7 +20,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StepActivity extends AppCompatActivity implements StepFragment.OnFragmentInteractionListener {
+public class StepActivity extends AppCompatActivity //implements StepFragment.OnFragmentInteractionListener
+ {
 
     private ArrayList<Step> stepArrayList = new ArrayList<>();
     private String recipeName;
@@ -64,12 +64,12 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnFr
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-
+/*
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-
+*/
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {

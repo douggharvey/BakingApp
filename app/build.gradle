@@ -47,12 +47,8 @@ dependencies {
     //Apache commons for stringutils
     implementation 'org.apache.commons:commons-lang3:3.7'
 
-    //Exoplayer //todo consider change to only necessary dependencies
-///    implementation 'com.google.android.exoplayer:exoplayer:2.7.0'
-    //compile 'com.google.android.exoplayer:exoplayer:2.7.0'
-
+    //Exoplayer
     implementation 'com.google.android.exoplayer:exoplayer-core:2.7.0'
-    //   compile 'com.google.android.exoplayer:exoplayer-dash:2.X.X'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.0'
 
     testImplementation 'junit:junit:4.12'

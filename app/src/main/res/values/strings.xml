@@ -13,5 +13,8 @@
 
     <string name="steps_header">Steps:</string>
     <string name="title_activity_step">StepActivity</string>
+    <string name="appwidget_text">NO DATA FOUND</string>
+    <string name="add_widget">Add widget</string>
+    <string name="choose_recipe">Choose recipe</string>
 
 </resources>

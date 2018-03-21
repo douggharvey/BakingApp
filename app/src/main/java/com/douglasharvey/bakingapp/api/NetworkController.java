@@ -1,8 +1,5 @@
 package com.douglasharvey.bakingapp.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -26,15 +23,10 @@ public class NetworkController {
         //todo consider a timeout here - refer other example/docs
         okHttpBuilder.networkInterceptors().add(httpLoggingInterceptor);
         okHttpBuilder.build();
-        //todo investigate for what purpose this is used.
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .serializeNulls()
-                .create();
 
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpBuilder.build())
                 .build();
     }

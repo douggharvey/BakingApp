@@ -100,7 +100,6 @@ public class MasterListActivity extends AppCompatActivity {
                 Timber.e(t.getMessage());
             }
         });
-        //todo consider whether to renumber recipes to account for missing steps (yellow cake step 7 missing!)
     }
 
 }

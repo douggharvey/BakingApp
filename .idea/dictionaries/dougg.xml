@@ -4,11 +4,14 @@
       <w>autofit</w>
       <w>butterknife</w>
       <w>exoplayer</w>
+      <w>ffwd</w>
       <w>gson</w>
+      <w>livedata</w>
       <w>nutella</w>
       <w>recyclerview</w>
       <w>spancount</w>
       <w>stringutils</w>
+      <w>viewmodel</w>
     </words>
   </dictionary>
 </component>

@@ -1,7 +1,6 @@
 package com.douglasharvey.bakingapp.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,18 +12,17 @@ import android.widget.TextView;
 
 import com.douglasharvey.bakingapp.R;
 import com.douglasharvey.bakingapp.adapters.StepAdapter;
-import com.douglasharvey.bakingapp.models.Ingredient;
 import com.douglasharvey.bakingapp.models.Recipe;
 import com.douglasharvey.bakingapp.uihelper.ItemClickSupport;
-
-import org.apache.commons.lang3.StringUtils;
+import com.douglasharvey.bakingapp.uihelper.UiUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
 @SuppressWarnings("WeakerAccess")
-public class DetailActivity extends AppCompatActivity implements StepFragment.OnFragmentInteractionListener {
+public class DetailActivity extends AppCompatActivity //implements StepFragment.OnFragmentInteractionListener
+        {
     private static Recipe recipe;
     private boolean twoPane;
 
@@ -71,6 +69,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
                 .commit();
         // TODO need to auto play first step on initial entry. Consider playing video in full screen then when finished going to other screen
         //todo save exoplayer position, consider option to automatically play full screen video (for phone especially).
+        //or just enable full screen button as per
     }
     //TODO SHOW WHICH STEPS HAVE VIDEOS
     private void populateUI() {
@@ -112,20 +111,8 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     }
 
     private void setupIngredients() {
-        StringBuilder ingredientsDisplay = new StringBuilder(100);
-        for (Ingredient ingredient : recipe.getIngredients()) {
-//https://stackoverflow.com/questions/3904579/how-to-capitalize-the-first-letter-of-a-string-in-java
-            ingredientsDisplay.append("- "); //todo find a better character?
-            ingredientsDisplay.append(StringUtils.capitalize(ingredient.getIngredient()));
-            ingredientsDisplay.append(" (");
-            ingredientsDisplay.append(ingredient.getQuantity());
-            ingredientsDisplay.append(" ");
-            ingredientsDisplay.append(ingredient.getMeasure().toLowerCase());
-            ingredientsDisplay.append(")\n");
-        }
-        tvIngredients.setText(ingredientsDisplay);
+        tvIngredients.setText(UiUtils.formatIngredients(recipe.getIngredients()));
     }
-
 
     private void setupSteps() {
         rvStepsList.setHasFixedSize(true);
@@ -149,11 +136,11 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
         scrollView.smoothScrollTo(0, 0); // todo need to save scroll position so that re-create of activity goes to same place
     }
 
-    @Override
+/*    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

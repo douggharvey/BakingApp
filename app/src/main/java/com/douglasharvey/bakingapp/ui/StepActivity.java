@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class StepActivity extends AppCompatActivity //implements StepFragment.OnFragmentInteractionListener
  {
@@ -47,6 +48,7 @@ public class StepActivity extends AppCompatActivity //implements StepFragment.On
         setSupportActionBar(toolbar);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+   //todo remove later     viewPagerSteps.setOffscreenPageLimit(5);
         viewPagerSteps.setAdapter(sectionsPagerAdapter);
         viewPagerSteps.setCurrentItem(selectedPosition);
 
@@ -64,12 +66,10 @@ public class StepActivity extends AppCompatActivity //implements StepFragment.On
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-/*
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
-*/
+//    To handle Fragment config. changes correctly, the below 2 links were followed:
+//  https://guides.codepath.com/android/Handling-Configuration-Changes#saving-and-restoring-fragment-state
+//  https://learnpainless.com/android/how-to-get-fragment-from-viewpager-android
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -78,7 +78,13 @@ public class StepActivity extends AppCompatActivity //implements StepFragment.On
 
         @Override
         public Fragment getItem(int position) {
-            return StepFragment.newInstance(stepArrayList.get(position).getVideoURL(), stepArrayList.get(position).getDescription());
+            Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager_steps + ":" + viewPagerSteps.getCurrentItem());
+            Timber.d("getItem: ");
+            if (page == null) {
+                Timber.d("getItem: create new Instance");
+                page = StepFragment.newInstance(stepArrayList.get(position).getVideoURL(), stepArrayList.get(position).getDescription());
+            }
+            return page;
         }
 
         @Override

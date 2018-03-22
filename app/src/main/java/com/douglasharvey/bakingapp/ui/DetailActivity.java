@@ -25,6 +25,9 @@ public class DetailActivity extends AppCompatActivity //implements StepFragment.
         {
     private static Recipe recipe;
     private boolean twoPane;
+    
+    private StepFragment stepFragment;
+    private final String FRAGMENT_TAG = "myfragmenttag";
 
     @BindView(R.id.tv_ingredients)
     TextView tvIngredients;
@@ -49,6 +52,16 @@ public class DetailActivity extends AppCompatActivity //implements StepFragment.
                 populateUI();
             }
         }
+
+        if (twoPane) {
+            if (savedInstanceState != null ) {
+                stepFragment = (StepFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+                Timber.d("onCreate: got fragment by tag");
+            } else if (stepFragment == null) {
+                handleTwoPaneMode();
+            }
+        }
+
     }
 
     private void checkTwoPane() {
@@ -57,15 +70,18 @@ public class DetailActivity extends AppCompatActivity //implements StepFragment.
         }
     }
 
-    private void setupStepFragment(String videoUrl, String description) {
+    private void createNewStepFragment(String videoUrl, String description) {
         //normally inside adapter
-        Bundle arguments = new Bundle();
+ /*       Bundle arguments = new Bundle();
         arguments.putString(StepFragment.VIDEO_URL, videoUrl);
         arguments.putString(StepFragment.DESCRIPTION, description);
-        StepFragment stepFragment = new StepFragment();
-        stepFragment.setArguments(arguments);
+        //StepFragment stepFragment = new StepFragment();
+       //     stepFragment.setArguments(arguments);
+ */
+        Timber.d("createNewStepFragment: ");
+        StepFragment stepFragment = StepFragment.newInstance(videoUrl, description);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_video_step_container, stepFragment)
+                .replace(R.id.fl_video_step_container, stepFragment, FRAGMENT_TAG)
                 .commit();
         // TODO need to auto play first step on initial entry. Consider playing video in full screen then when finished going to other screen
         //todo save exoplayer position, consider option to automatically play full screen video (for phone especially).
@@ -77,13 +93,12 @@ public class DetailActivity extends AppCompatActivity //implements StepFragment.
         handleActionBar();
         setupIngredients();
         setupSteps();
-        if (twoPane) handleTwoPaneMode();
-        else handleOnePaneMode();
+        if (!twoPane) handleOnePaneMode();
 
     }
 
     private void handleTwoPaneMode() { //todo maybe cleanup this?
-        setupStepFragment(recipe.getSteps().get(0).getVideoURL(), recipe.getSteps().get(0).getDescription());
+        createNewStepFragment(recipe.getSteps().get(0).getVideoURL(), recipe.getSteps().get(0).getDescription());
     }
 
     private void handleOnePaneMode() {
@@ -91,7 +106,7 @@ public class DetailActivity extends AppCompatActivity //implements StepFragment.
     }
 
     private void handleStepClick(String videoUrl, String description, int position) {
-        if (twoPane) setupStepFragment(videoUrl, description);
+        if (twoPane) createNewStepFragment(videoUrl, description);
         else {
             Intent startStepIntent = new Intent(DetailActivity.this, StepActivity.class);
             startStepIntent.putParcelableArrayListExtra(getResources().getString(R.string.EXTRA_STEPS), recipe.getSteps());

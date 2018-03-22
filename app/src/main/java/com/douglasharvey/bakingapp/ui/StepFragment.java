@@ -3,7 +3,6 @@ package com.douglasharvey.bakingapp.ui;
 import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -47,12 +46,15 @@ public class StepFragment extends Fragment {
     private final String STATE_RESUME_WINDOW = "resumeWindow";
     private final String STATE_RESUME_POSITION = "resumePosition";
     private final String STATE_PLAYER_FULLSCREEN = "playerFullscreen";
+    private final String STATE_PLAYER_PLAY_WHEN_READY = "playWhenReady";
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.main_media_frame)
     FrameLayout mainMediaFrame;
 
     private boolean exoPlayerFullscreen = false;
+    private boolean playWhenReady = true;
+
     private FrameLayout fullScreenButton;
     private ImageView fullScreenIcon;
     private Dialog fullScreenDialog;
@@ -61,9 +63,8 @@ public class StepFragment extends Fragment {
 
     @SuppressWarnings("WeakerAccess")
 
-    //  @BindView(R.id.player_view)
-
     PlayerView playerView;
+    SimpleExoPlayer player;
 
     @SuppressWarnings("WeakerAccess")
     Unbinder unbinder;
@@ -74,10 +75,8 @@ public class StepFragment extends Fragment {
     private String videoUrl;
     private String description;
 
- //   private OnFragmentInteractionListener mListener;
 
     public StepFragment() {
-        // Required empty public constructor
     }
 
     public static StepFragment newInstance(String videoUrl, String description) {
@@ -86,6 +85,7 @@ public class StepFragment extends Fragment {
         args.putString(VIDEO_URL, videoUrl);
         args.putString(DESCRIPTION, description);
         fragment.setArguments(args);
+        Timber.d("newInstance: set arguments" + videoUrl + description);
         return fragment;
     }
 
@@ -96,50 +96,36 @@ public class StepFragment extends Fragment {
             videoUrl = getArguments().getString(VIDEO_URL);
             description = getArguments().getString(DESCRIPTION);
         }
-        Timber.d("onCreate: ");
 
-        if (savedInstanceState != null) {
-            resumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
-            resumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
-            exoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
-            Timber.d("onCreate: resumewindow:"+resumeWindow);
-            Timber.d("onCreate: resumePosition:"+resumePosition);
-        }
     }
 
+
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        //todo not being called on rotation?
-        Timber.d("onSaveInstanceState: resumewindow:"+resumeWindow);
-        Timber.d("onSaveInstanceState: resumePosition:"+resumePosition);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(STATE_RESUME_WINDOW, resumeWindow);
         outState.putLong(STATE_RESUME_POSITION, resumePosition);
         outState.putBoolean(STATE_PLAYER_FULLSCREEN, exoPlayerFullscreen);
-
+        outState.putBoolean(STATE_PLAYER_PLAY_WHEN_READY, playWhenReady);
         super.onSaveInstanceState(outState);
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
         tvStepLongDescription.setText(description);
 
-        Timber.d("onResume:" + videoUrl + ":");
-
         if (playerView == null) {
             playerView = getView().findViewById(R.id.player_view);
             initFullscreenDialog();
             initFullscreenButton();
-            Timber.d("onResume: dialog/full screenbutton initialized");
         }
 
-        if (videoUrl == null)
-            playerView.setVisibility(View.GONE); //todo problems here, filenotfoundexception . do we need to release / what other solution?
-        else startVideoPlayer();
+        if ((videoUrl == null) || videoUrl.trim().length()==0 ){
+            Timber.d("onResume: videoUrl is blank! - set player to gone");
+            mainMediaFrame.setVisibility(View.INVISIBLE);
+        } else startVideoPlayer();
 
         if (exoPlayerFullscreen) {
-            Timber.d("onResume: full screen true");
             ((ViewGroup) playerView.getParent()).removeView(playerView);
             fullScreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             fullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_skrink));
@@ -150,57 +136,46 @@ public class StepFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (playerView != null && playerView.getPlayer() != null) {
-            resumeWindow = playerView.getPlayer().getCurrentWindowIndex();
-            resumePosition = Math.max(0, playerView.getPlayer().getContentPosition());
-            Timber.d("onPause: resumewindow:"+resumeWindow);
-            Timber.d("onPause: resumePosition:"+resumePosition);
-            playerView.getPlayer().release();
+        if (playerView != null && player != null) {
+            resumeWindow = player.getCurrentWindowIndex(); //to do unnecessary?
+            playWhenReady = player.getPlayWhenReady();
+            resumePosition = player.getCurrentPosition();
+            Timber.d("onPause: resumewindow:" + resumeWindow);
+            Timber.d("onPause: resumePosition:" + resumePosition);
+            player.stop();
+            player.release();
         }
 
         if (fullScreenDialog != null)
             fullScreenDialog.dismiss();
     }
 
-    //TODO HOW TO MAKE THE VIDEO LOOK BETTER /
-
     private void startVideoPlayer() {
-        MediaSource videoSource;//exoplayer
-
-        Handler mainHandler = new Handler();
+        MediaSource videoSource;
 
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory =
                 new AdaptiveTrackSelection.Factory(bandwidthMeter);
-//todo check/clean up this code.
-
         TrackSelector trackSelector =
                 new DefaultTrackSelector(videoTrackSelectionFactory);
-// 2. Create the player
-        SimpleExoPlayer player =
-                ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
 
         Uri videoUri = Uri.parse(videoUrl);
-        Timber.d("onActivityCreated: %s", videoUrl);
 //todo fix lint warning
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), getActivity().getApplication().getPackageName()));
-
         videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(videoUri);
 
-
         playerView.setPlayer(player);
-//TODO TRYING https://stackoverflow.com/questions/45481775/exoplayer-restore-state-when-resumed
-        boolean haveResumePosition = resumeWindow != C.INDEX_UNSET; //TODO CHECK THIS
-
-    //    if (haveResumePosition) {
-//            playerView.getPlayer().seekTo(resumeWindow, resumePosition);
-    //    }
-
-        if (resumePosition != C.TIME_UNSET) player.seekTo(resumePosition);
-
         player.prepare(videoSource);
-        player.setPlayWhenReady(true);
+
+        Timber.d("startVideoPlayer: resumeposition"+resumePosition);
+        Timber.d("startVideoPlayer: C.TIME_UNSET"+C.TIME_UNSET);
+        if (resumePosition != C.TIME_UNSET) {
+            player.seekTo(resumePosition); //important seek must be after prepare...
+            Timber.d("startVideoPlayer: seekto done");
+        }
+        player.setPlayWhenReady(playWhenReady);
     }
 
     private void initFullscreenDialog() {
@@ -256,38 +231,22 @@ public class StepFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_step, container, false);
         unbinder = ButterKnife.bind(this, view);
         tvStepLongDescription.setMovementMethod(new ScrollingMovementMethod());
+
+        if (savedInstanceState != null) {
+            resumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
+            resumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
+            exoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
+            playWhenReady = savedInstanceState.getBoolean(STATE_PLAYER_PLAY_WHEN_READY);
+            Timber.d("onCreateView: resumewindow:" + resumeWindow);
+            Timber.d("onCreateView: resumePosition:" + resumePosition);
+        }
         return view;
     }
 
-/*
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-      */
-
-/*
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
-    }
-*/
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Timber.d("onDestroyView: ");
         unbinder.unbind();
     }
-//TODO POSSIBLE TO REMOVE THIS?
- /*   public interface OnFragmentInteractionListener {
-        @SuppressWarnings("EmptyMethod")
-        void onFragmentInteraction(Uri uri);
-    }
-    */
 }

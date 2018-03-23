@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.douglasharvey.bakingapp.R;
 import com.douglasharvey.bakingapp.models.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -61,9 +62,19 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.recipe = recipeList.get(position);
-        //holder.ivMasterRecipeImage = // no image data on json so unable to determine a way to load it.
+
         holder.tvMasterRecipeName.setText(holder.recipe.getName());
         holder.tvRecipeNumberServings.setText(Integer.toString(holder.recipe.getServings()));
+
+        // no image data on json sample but in any case the code below has been tested by using a hard-coded image
+        // ivMasterRecipeImage is displayed with a default image of a cupcake.
+        if (holder.recipe.getImage() != null && !holder.recipe.getImage().trim().isEmpty()) {
+            Picasso.with(holder.ivMasterRecipeImage.getContext())
+                    .load(holder.recipe.getImage())
+                    .placeholder(R.drawable.ic_cupcake)
+                    .error(R.drawable.ic_cupcake)
+                    .into(holder.ivMasterRecipeImage);
+        }
     }
 
     @Override

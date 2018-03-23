@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.douglasharvey.bakingapp.R;
 import com.douglasharvey.bakingapp.api.ApiEndpointInterface;
@@ -25,7 +26,7 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 
-public class BakingAppWidgetConfigureActivity extends Activity  {
+public class BakingAppWidgetConfigureActivity extends Activity {
 
     private static final String PREFS_NAME = "com.douglasharvey.bakingapp.widget.BakingAppWidgetProvider";
     private static final String PREF_PREFIX_KEY = "appwidget_";
@@ -100,7 +101,14 @@ public class BakingAppWidgetConfigureActivity extends Activity  {
             return;
         }
 
-      loadRecipes();
+        if (NetworkController.isInternetAvailable(this)) {
+            loadRecipes();
+        }
+        else
+        {
+            Toast.makeText(this, R.string.error_internet_connectivity, Toast.LENGTH_LONG).show();
+            findViewById(R.id.add_button).setVisibility(View.GONE);
+        }
     }
 
     private void loadRecipes() {
@@ -118,7 +126,7 @@ public class BakingAppWidgetConfigureActivity extends Activity  {
                 if (statusCode == 200) {
                     recipeList = response.body();
                     ArrayList<String> arrayList = new ArrayList<>();
-                    for (Recipe recipe:recipeList) {
+                    for (Recipe recipe : recipeList) {
                         arrayList.add(recipe.getName());
                     }
                     setupSpinner(arrayList);
@@ -136,7 +144,7 @@ public class BakingAppWidgetConfigureActivity extends Activity  {
     private void setupSpinner(ArrayList<String> arrayList) {
         spinner = findViewById(R.id.appwidget_spinner);
         @SuppressWarnings("unchecked") ArrayAdapter<String> adapter = new ArrayAdapter(BakingAppWidgetConfigureActivity.this,
-                 android.R.layout.simple_spinner_item, arrayList);
+                android.R.layout.simple_spinner_item, arrayList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }

@@ -11,7 +11,7 @@ public class UiUtils {
         StringBuilder ingredientsDisplay = new StringBuilder(100);
         for (Ingredient ingredient : ingredientList) {
 //https://stackoverflow.com/questions/3904579/how-to-capitalize-the-first-letter-of-a-string-in-java
-            ingredientsDisplay.append("- "); //todo find a better character?
+            ingredientsDisplay.append("- ");
             ingredientsDisplay.append(StringUtils.capitalize(ingredient.getIngredient()));
             ingredientsDisplay.append(" (");
             ingredientsDisplay.append(ingredient.getQuantity());

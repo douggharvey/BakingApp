@@ -16,5 +16,7 @@
     <string name="appwidget_text">NO DATA FOUND</string>
     <string name="add_widget">Add widget</string>
     <string name="choose_recipe">Choose recipe</string>
+    <string name="error_internet_connectivity">Internet connection unavailable</string>
+    <string name="thumbnail_image">Thumbnail Image</string>
 
 </resources>

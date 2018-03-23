@@ -13,26 +13,25 @@ import android.widget.TextView;
 import com.douglasharvey.bakingapp.R;
 import com.douglasharvey.bakingapp.adapters.StepAdapter;
 import com.douglasharvey.bakingapp.models.Recipe;
+import com.douglasharvey.bakingapp.models.Step;
 import com.douglasharvey.bakingapp.uihelper.ItemClickSupport;
 import com.douglasharvey.bakingapp.uihelper.UiUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 @SuppressWarnings("WeakerAccess")
-public class DetailActivity extends AppCompatActivity //implements StepFragment.OnFragmentInteractionListener
-        {
+public class DetailActivity extends AppCompatActivity
+{
     private static Recipe recipe;
-    private boolean twoPane;
-    
-    private StepFragment stepFragment;
-    private final String FRAGMENT_TAG = "myfragmenttag";
-
     @BindView(R.id.tv_ingredients)
     TextView tvIngredients;
     @BindView(R.id.rv_steps_list)
     RecyclerView rvStepsList;
+
+    private boolean twoPane;
+    private StepFragment stepFragment;
+    private final String FRAGMENT_TAG = "steps_fragment_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,26 +39,27 @@ public class DetailActivity extends AppCompatActivity //implements StepFragment.
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        Intent receivedIntent = getIntent();
-
         checkTwoPane();
 
+        Intent receivedIntent = getIntent();
         if (receivedIntent.hasExtra(getString(R.string.EXTRA_SELECTED_RECIPE))) {
             Bundle data = receivedIntent.getExtras();
             if (data != null) {
-                Timber.d("onCreate: get parcelable");
                 recipe = data.getParcelable(getString(R.string.EXTRA_SELECTED_RECIPE));
                 populateUI();
             }
         }
 
         if (twoPane) {
-            if (savedInstanceState != null ) {
+            if (savedInstanceState != null) { // to handle config. change correctly first looking for existing fragment
                 stepFragment = (StepFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
-                Timber.d("onCreate: got fragment by tag");
             } else if (stepFragment == null) {
-                handleTwoPaneMode();
+                //Defaulting to opening first step's video
+                Step firstStep = recipe.getSteps().get(0);
+                createNewStepFragment(firstStep.getVideoURL(), firstStep.getDescription(),firstStep.getThumbnailURL());
             }
+        } else if (savedInstanceState == null) { //by default, scrollview position is saved therefore only want to scrolltoTop on first entry to a recipe.
+            scrollToTop();
         }
 
     }
@@ -70,43 +70,26 @@ public class DetailActivity extends AppCompatActivity //implements StepFragment.
         }
     }
 
-    private void createNewStepFragment(String videoUrl, String description) {
-        //normally inside adapter
- /*       Bundle arguments = new Bundle();
-        arguments.putString(StepFragment.VIDEO_URL, videoUrl);
-        arguments.putString(StepFragment.DESCRIPTION, description);
-        //StepFragment stepFragment = new StepFragment();
-       //     stepFragment.setArguments(arguments);
- */
-        Timber.d("createNewStepFragment: ");
-        StepFragment stepFragment = StepFragment.newInstance(videoUrl, description);
+    private void createNewStepFragment(String videoUrl, String description, String thumbnailUrl) {
+        StepFragment stepFragment = StepFragment.newInstance(videoUrl, description, thumbnailUrl);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fl_video_step_container, stepFragment, FRAGMENT_TAG)
                 .commit();
-        // TODO need to auto play first step on initial entry. Consider playing video in full screen then when finished going to other screen
-        //todo save exoplayer position, consider option to automatically play full screen video (for phone especially).
-        //or just enable full screen button as per
     }
-    //TODO SHOW WHICH STEPS HAVE VIDEOS
+
     private void populateUI() {
-        //todo check lint warning
         handleActionBar();
         setupIngredients();
         setupSteps();
-        if (!twoPane) handleOnePaneMode();
-
     }
 
-    private void handleTwoPaneMode() { //todo maybe cleanup this?
-        createNewStepFragment(recipe.getSteps().get(0).getVideoURL(), recipe.getSteps().get(0).getDescription());
+    private void scrollToTop() {
+        ScrollView scrollView = findViewById(R.id.layout_detail); //cannot use butterknife for this because scrollview is only present for one-pane mode.
+        scrollView.smoothScrollTo(0, 0);
     }
 
-    private void handleOnePaneMode() {
-        scrollToTop();
-    }
-
-    private void handleStepClick(String videoUrl, String description, int position) {
-        if (twoPane) createNewStepFragment(videoUrl, description);
+    private void handleStepClick(String videoUrl, String description, String thumbnailUrl, int position) {
+        if (twoPane) createNewStepFragment(videoUrl, description, thumbnailUrl);
         else {
             Intent startStepIntent = new Intent(DetailActivity.this, StepActivity.class);
             startStepIntent.putParcelableArrayListExtra(getResources().getString(R.string.EXTRA_STEPS), recipe.getSteps());
@@ -137,25 +120,15 @@ public class DetailActivity extends AppCompatActivity //implements StepFragment.
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        handleStepClick(recipe.getSteps().get(position).getVideoURL(), recipe.getSteps().get(position).getDescription(),position);
-//todo need to change colour of clicked position or some other method
-
+                        Step selectedStep = recipe.getSteps().get(position);
+                        handleStepClick(selectedStep.getVideoURL(), selectedStep.getDescription(), selectedStep.getThumbnailURL(), position);
                     }
                 }
         );
 
     }
 
-    private void scrollToTop() {
-        ScrollView scrollView = findViewById(R.id.layout_detail);
-        scrollView.smoothScrollTo(0, 0); // todo need to save scroll position so that re-create of activity goes to same place
-    }
 
-/*    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

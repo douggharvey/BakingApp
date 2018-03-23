@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.douglasharvey.bakingapp.R;
 import com.douglasharvey.bakingapp.adapters.MasterAdapter;
@@ -39,14 +40,18 @@ public class MasterListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_list);
         ButterKnife.bind(this);
-        pbMasterList.setVisibility(View.VISIBLE);
-        if (savedInstanceState == null || !savedInstanceState.containsKey(RECIPE_LIST)) {
-            loadRecipes();
+        if (NetworkController.isInternetAvailable(this)) {
+            pbMasterList.setVisibility(View.VISIBLE);
+            if (savedInstanceState == null || !savedInstanceState.containsKey(RECIPE_LIST)) {
+                loadRecipes();
+            } else {
+                recipeList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
+                pbMasterList.setVisibility(View.INVISIBLE);
+            }
+            setupRecipesList();
         } else {
-            recipeList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
-            pbMasterList.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, R.string.error_internet_connectivity, Toast.LENGTH_LONG).show();
         }
-        setupRecipesList();
     }
 
     @Override
@@ -55,8 +60,7 @@ public class MasterListActivity extends AppCompatActivity {
         outState.putParcelableArrayList(RECIPE_LIST,
                 recipeList);
     }
-//todo find a way to extend view as clickable area is less than screen width/column width.
-    // or show clickable area.
+
     private void setupRecipesList() {
         //NOTE: not setting LayoutManager here because it is done in AutoRecyclerView according to dynamically calculated spancount.
 
@@ -75,8 +79,9 @@ public class MasterListActivity extends AppCompatActivity {
                 }
         );
     }
-//todo consider moving most of this to another class but need to implement a callback to the ui - also may consider livedata/viewmodel to share everywhere.
+
     private void loadRecipes() {
+
         ApiEndpointInterface apiService =
                 NetworkController
                         .getClient()

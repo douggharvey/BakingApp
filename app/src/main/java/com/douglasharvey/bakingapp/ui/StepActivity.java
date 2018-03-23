@@ -19,9 +19,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
-public class StepActivity extends AppCompatActivity //implements StepFragment.OnFragmentInteractionListener
+public class StepActivity extends AppCompatActivity
  {
 
     private ArrayList<Step> stepArrayList = new ArrayList<>();
@@ -48,7 +47,6 @@ public class StepActivity extends AppCompatActivity //implements StepFragment.On
         setSupportActionBar(toolbar);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-   //todo remove later     viewPagerSteps.setOffscreenPageLimit(5);
         viewPagerSteps.setAdapter(sectionsPagerAdapter);
         viewPagerSteps.setCurrentItem(selectedPosition);
 
@@ -70,19 +68,19 @@ public class StepActivity extends AppCompatActivity //implements StepFragment.On
 //    To handle Fragment config. changes correctly, the below 2 links were followed:
 //  https://guides.codepath.com/android/Handling-Configuration-Changes#saving-and-restoring-fragment-state
 //  https://learnpainless.com/android/how-to-get-fragment-from-viewpager-android
+
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
             Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager_steps + ":" + viewPagerSteps.getCurrentItem());
-            Timber.d("getItem: ");
             if (page == null) {
-                Timber.d("getItem: create new Instance");
-                page = StepFragment.newInstance(stepArrayList.get(position).getVideoURL(), stepArrayList.get(position).getDescription());
+                Step step = stepArrayList.get(position);
+                page = StepFragment.newInstance(step.getVideoURL(), step.getDescription(), step.getThumbnailURL());
             }
             return page;
         }

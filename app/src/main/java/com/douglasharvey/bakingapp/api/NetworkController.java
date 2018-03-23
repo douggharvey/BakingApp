@@ -1,5 +1,9 @@
 package com.douglasharvey.bakingapp.api;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -29,5 +33,14 @@ public class NetworkController {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpBuilder.build())
                 .build();
+    }
+
+    // Reference: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html
+
+    public static boolean isInternetAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        @SuppressWarnings("ConstantConditions") NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

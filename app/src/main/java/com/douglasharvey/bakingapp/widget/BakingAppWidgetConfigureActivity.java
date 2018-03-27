@@ -114,7 +114,7 @@ public class BakingAppWidgetConfigureActivity extends Activity {
     private void loadRecipes() {
         ApiEndpointInterface apiService =
                 NetworkController
-                        .getClient()
+                        .getClient(NetworkController.getOkHttpClient())
                         .create(ApiEndpointInterface.class);
         final Call<ArrayList<Recipe>> recipeListCall = apiService.getRecipe();
 

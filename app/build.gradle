@@ -22,6 +22,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    //okHttp (test)
+    //implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+
     //Butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -29,10 +32,8 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.0'
     //Design library
     implementation 'com.android.support:design:27.1.0'
-
     //recyclerview
     implementation 'com.android.support:recyclerview-v7:27.1.0'
-
     //gson
     implementation 'com.google.code.gson:gson:2.8.2'
     //Retrofit
@@ -40,21 +41,45 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     //OKHttp
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
-
     //timber
     implementation 'com.jakewharton.timber:timber:4.6.1'
-
     //Apache commons for stringutils
     implementation 'org.apache.commons:commons-lang3:3.7'
-
     //Exoplayer
     implementation 'com.google.android.exoplayer:exoplayer-core:2.7.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.0'
-
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
-
+    //Testing. Dependencies decided based on reading Busy coders guide v 8.10
     testImplementation 'junit:junit:4.12'
+
+    androidTestImplementation 'com.android.support:support-annotations:27.1.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
+    androidTestImplementation 'com.android.support:recyclerview-v7:27.1.0'
+    //Espresso
+    //https://caster.io/lessons/espreso-idling-registry-for-okhttp/
+    debugImplementation ('com.jakewharton.espresso:okhttp3-idling-resource:1.0.0') {
+        exclude module: 'support-annotations'
+    }
+
+    //https://developer.android.com/training/testing/espresso/index.html
+
+    /* espresso-core - Contains core and basic View matchers, actions, and assertions. See Basics and Recipes.
+    espresso-web - Contains resources for WebView support.
+    espresso-idling-resource - Espresso’s mechanism for synchronization with background jobs.
+    espresso-contrib - External contributions that contain DatePicker, RecyclerView and Drawer actions, accessibility checks, and CountingIdlingResource.
+    espresso-intents - Extension to validate and stub intents for hermetic testing.
+    */
+    //https://developer.android.com/training/testing/espresso/intents.html
+    debugImplementation 'com.android.support.test.espresso.idling:idling-concurrent:3.0.1'
+
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
 }

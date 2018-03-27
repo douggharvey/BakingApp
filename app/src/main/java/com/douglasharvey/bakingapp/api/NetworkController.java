@@ -13,28 +13,26 @@ public class NetworkController {
 
     private static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/";
 
-    public static Retrofit getClient() {
-
+    public static OkHttpClient getOkHttpClient() {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
-
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-
-        // Can be Level.BASIC, Level.HEADERS, or Level.BODY
-        // See http://square.github.io/okhttp/3.x/logging-interceptor/ to see the options.
-
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-
-        //todo consider a timeout here - refer other example/docs
         okHttpBuilder.networkInterceptors().add(httpLoggingInterceptor);
-        okHttpBuilder.build();
+        return okHttpBuilder.build();
+    }
 
+    public static Retrofit getClient(OkHttpClient okHttpClient) {
+        //OkHttpClient okHttpClient = getOkHttpClient();
+    /*    if (BuildConfig.DEBUG) {
+            IdlingResources.registerOkHttp(okHttpClient); // syntax is different in the Advanced lesson  (video 34)
+        }
+*/
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpBuilder.build())
+                .client(okHttpClient)
                 .build();
     }
-
     // Reference: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html
 
     public static boolean isInternetAvailable(Context context) {
@@ -43,4 +41,6 @@ public class NetworkController {
         @SuppressWarnings("ConstantConditions") NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
+
+
 }

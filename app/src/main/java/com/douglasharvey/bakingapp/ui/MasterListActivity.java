@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +35,9 @@ public class MasterListActivity extends AppCompatActivity {
     ProgressBar pbMasterList;
     private MasterAdapter adapter;
     ArrayList<Recipe> recipeList;
+
+    private final OkHttpClient okHttpClient=
+            NetworkController.getOkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +85,10 @@ public class MasterListActivity extends AppCompatActivity {
     }
 
     private void loadRecipes() {
-
+        Timber.d("loadRecipes: entered");
         ApiEndpointInterface apiService =
                 NetworkController
-                        .getClient()
+                        .getClient(okHttpClient)
                         .create(ApiEndpointInterface.class);
         final Call<ArrayList<Recipe>> recipeListCall = apiService.getRecipe();
 
@@ -94,6 +98,14 @@ public class MasterListActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<ArrayList<Recipe>> call, @NonNull Response<ArrayList<Recipe>> response) {
                 int statusCode = response.code();
                 if (statusCode == 200) {
+                    Timber.d("onResponse: response received");
+             /*       try {
+                        // thread to sleep for 1000 milliseconds
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+*/
                     adapter.setRecipesData(response.body());
                     recipeList = response.body();
                     pbMasterList.setVisibility(View.INVISIBLE);
@@ -106,5 +118,7 @@ public class MasterListActivity extends AppCompatActivity {
             }
         });
     }
-
+    OkHttpClient getOkHttpClient() {
+        return(okHttpClient);
+    }
 }

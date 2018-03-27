@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.douglasharvey.bakingapp"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -22,9 +22,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    //okHttp (test)
-    //implementation 'com.squareup.okhttp3:okhttp:3.9.1'
-
     //Butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -58,10 +55,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.0.1'
     androidTestImplementation 'com.android.support:recyclerview-v7:27.1.0'
     //Espresso
-    //https://caster.io/lessons/espreso-idling-registry-for-okhttp/
-    debugImplementation ('com.jakewharton.espresso:okhttp3-idling-resource:1.0.0') {
-        exclude module: 'support-annotations'
-    }
 
     //https://developer.android.com/training/testing/espresso/index.html
 

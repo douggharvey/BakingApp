@@ -69,7 +69,7 @@ public class StepActivity extends AppCompatActivity
 //  https://guides.codepath.com/android/Handling-Configuration-Changes#saving-and-restoring-fragment-state
 //  https://learnpainless.com/android/how-to-get-fragment-from-viewpager-android
 
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+    class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);

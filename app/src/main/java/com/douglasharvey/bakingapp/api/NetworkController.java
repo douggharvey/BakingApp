@@ -13,7 +13,7 @@ public class NetworkController {
 
     private static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/";
 
-    public static OkHttpClient getOkHttpClient() {
+    private static OkHttpClient getOkHttpClient() {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
@@ -21,20 +21,15 @@ public class NetworkController {
         return okHttpBuilder.build();
     }
 
-    public static Retrofit getClient(OkHttpClient okHttpClient) {
-        //OkHttpClient okHttpClient = getOkHttpClient();
-    /*    if (BuildConfig.DEBUG) {
-            IdlingResources.registerOkHttp(okHttpClient); // syntax is different in the Advanced lesson  (video 34)
-        }
-*/
+    public static Retrofit getClient() {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
+                .client(getOkHttpClient())
                 .build();
     }
-    // Reference: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html
 
+    // Reference: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html
     public static boolean isInternetAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

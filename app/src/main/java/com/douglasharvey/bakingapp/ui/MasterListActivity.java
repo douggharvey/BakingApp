@@ -3,12 +3,16 @@ package com.douglasharvey.bakingapp.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.douglasharvey.bakingapp.IdlingResource.SimpleIdlingResource;
 import com.douglasharvey.bakingapp.R;
 import com.douglasharvey.bakingapp.adapters.MasterAdapter;
 import com.douglasharvey.bakingapp.api.ApiEndpointInterface;
@@ -20,7 +24,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,8 +39,21 @@ public class MasterListActivity extends AppCompatActivity {
     private MasterAdapter adapter;
     ArrayList<Recipe> recipeList;
 
-    private final OkHttpClient okHttpClient=
-            NetworkController.getOkHttpClient();
+    @Nullable
+    private
+    SimpleIdlingResource idlingResource;
+
+    boolean loadRecipes = false;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (idlingResource == null) {
+            idlingResource = new SimpleIdlingResource();
+        }
+
+        return idlingResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +63,8 @@ public class MasterListActivity extends AppCompatActivity {
         if (NetworkController.isInternetAvailable(this)) {
             pbMasterList.setVisibility(View.VISIBLE);
             if (savedInstanceState == null || !savedInstanceState.containsKey(RECIPE_LIST)) {
-                loadRecipes();
+                loadRecipes = true;
+                //loadRecipes();
             } else {
                 recipeList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
                 pbMasterList.setVisibility(View.INVISIBLE);
@@ -57,6 +74,13 @@ public class MasterListActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error_internet_connectivity, Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (loadRecipes) loadRecipes();
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -86,9 +110,14 @@ public class MasterListActivity extends AppCompatActivity {
 
     private void loadRecipes() {
         Timber.d("loadRecipes: entered");
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
+
         ApiEndpointInterface apiService =
                 NetworkController
-                        .getClient(okHttpClient)
+                        .getClient()
                         .create(ApiEndpointInterface.class);
         final Call<ArrayList<Recipe>> recipeListCall = apiService.getRecipe();
 
@@ -109,16 +138,23 @@ public class MasterListActivity extends AppCompatActivity {
                     adapter.setRecipesData(response.body());
                     recipeList = response.body();
                     pbMasterList.setVisibility(View.INVISIBLE);
+                    setIdlingResourceToTrue();
                 } else Timber.e("onResponse: %s", statusCode);
+
             }
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<Recipe>> call, @NonNull Throwable t) {
                 Timber.e(t.getMessage());
+                setIdlingResourceToTrue();
             }
         });
     }
-    OkHttpClient getOkHttpClient() {
-        return(okHttpClient);
+
+    private void setIdlingResourceToTrue()
+    {
+        if (idlingResource != null) {
+            idlingResource.setIdleState(true);
+        }
     }
 }

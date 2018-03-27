@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/master_servings_header"
-        android:textAppearance="?attr/textAppearanceListItem"
+        android:textAppearance="?android:attr/textAppearanceListItem"
         app:layout_constraintStart_toStartOf="@+id/tv_master_recipe_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_master_recipe_name" />
 
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/master_servings_start_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
+        android:textAppearance="?android:attr/textAppearanceListItem"
         app:layout_constraintStart_toEndOf="@+id/tv_master_servings_header"
         app:layout_constraintTop_toTopOf="@+id/tv_master_servings_header"
         tools:text="8" />

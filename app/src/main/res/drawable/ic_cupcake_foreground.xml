@@ -1,8 +1,10 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-        android:width="108dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="108dp"
         android:height="108dp"
         android:viewportWidth="271.995"
-        android:viewportHeight="271.995">
+        android:viewportHeight="271.995"
+    tools:keep="@drawable/ic_cupcake_foreground">
     <path
         android:pathData="M271.99,80.91c-5.82,-5.56 -16.89,-4.74 -34.49,5.77c-9.03,5.17 -17.14,4.91 -25.64,-1.28c-11.78,-9.25 -23.22,-11.95 -37.13,-0.21c-7.37,5.74 -14.09,7.64 -21.7,2.05c-8.06,-11.61 -17.09,-14.2 -30.1,-0.66c-7.41,5.74 -14.21,6.25 -21.78,0.57c-13.07,-13.4 -24.29,-12.09 -36.72,-0.84c-8.71,4.95 -16.65,5.98 -25.59,-0.45C24.24,77.48 7.86,75.73 0.16,78.86C-7.43,-4.34 254.07,-25.14 271.99,80.91L271.99,80.91z"
         android:fillColor="#030104"/>

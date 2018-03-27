@@ -101,6 +101,7 @@ public class ItemClickSupport {
         void onItemClicked(RecyclerView recyclerView, int position, View v);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public interface OnItemLongClickListener {
 
         boolean onItemLongClicked(RecyclerView recyclerView, int position, View v);

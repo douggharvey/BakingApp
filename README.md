@@ -1,6 +1,6 @@
 # Baking App Project (UDACITY Android Developer Nanodegree)
 
-![Phone](https://imgur.com/Kbk5U9u.gif)![Tablet](https://imgur.com/RSNUD2Y.gif)
+![Phone](https://imgur.com/vARVu03.gif)![Tablet](https://imgur.com/FwGydM6.gif)
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)[![Platform Android](https://img.shields.io/badge/platform-Android-blue.svg)](https://www.android.com)
 

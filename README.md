@@ -2,7 +2,7 @@
 
 Phone version | Tablet version
 ------------ | ------------- 
-<img src="https://imgur.com/1RUmerG.gif" width="300px" alt="Phone"/> | <img src="https://imgur.com/QyNHV3h.gif" width="300px" alt="Tablet"/>
+<img src="https://imgur.com/1RUmerG.gif" width="300px" alt="Phone"/> | <img src="https://imgur.com/QyNHV3h.gif" width="500px" alt="Tablet"/>
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)[![Platform Android](https://img.shields.io/badge/platform-Android-blue.svg)](https://www.android.com)
 

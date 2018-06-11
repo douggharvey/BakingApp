@@ -2,7 +2,7 @@
 
 Phone version | Tablet version
 ------------ | ------------- 
-<img src="https://imgur.com/1RUmerG.gif" width="250px" alt="Phone"/> | <img src="https://imgur.com/QyNHV3h.gif" width="250px" alt="Tablet"/> 
+<img src="https://imgur.com/1RUmerG.gif" width="300px" alt="Phone"/> | <img src="https://imgur.com/QyNHV3h.gif" width="300px" alt="Tablet"/>
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)[![Platform Android](https://img.shields.io/badge/platform-Android-blue.svg)](https://www.android.com)
 
@@ -48,7 +48,6 @@ https://github.com/douggharvey/PopularMovies.git
 * [Gson](https://github.com/google/gson)
 * [Picasso](https://github.com/square/picasso)
 * [Butterknife](https://github.com/JakeWharton/butterknife)
-* [MaterialFavoriteButton](https://github.com/IvBaranov/MaterialFavoriteButton)
 * [OKHttp Logging Interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor)
 * [ExoPlayer](https://github.com/google/ExoPlayer)
 * [Espresso](https://developer.android.com/training/testing/espresso/index.html)
